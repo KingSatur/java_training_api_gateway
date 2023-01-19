@@ -1,0 +1,10 @@
+info:
+  app:
+    version: ${version}
+    name: ${rootProject.name}
+    description: ${rootProject.description}
+    commit: ${commitInfo}
+    javaVersion: ${sourceCompatibility}
+spring:
+  application:
+    name: api-gateway

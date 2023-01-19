@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true">
+    <property name="LOG_PATH" value="${LOG_DIRECTORY}/%d{yyyy/MM/dd, aux}" />
+    <springProperty scope="context" name="springAppName" source="spring.application.name" />
+    <springProperty scope="context" name="artifactCommit" source="info.app.commit" />
+
+    <property name="LOG_LEVEL_PATTERN" value="%5p [${springAppName},%X{traceId:-},%X{spanId:-}, ${artifactCommit:-}]" />
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+    <appender name="APPLICATION_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender" >
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOG_PATH}/book-service-%d{yyyy-MM-dd_HH}.log
+            </fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <logger name="com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver" level="warn" />
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="APPLICATION_FILE" />
+    </root>
+</configuration>
