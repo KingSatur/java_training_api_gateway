@@ -25,12 +25,12 @@ public class RequestTraceFilter implements GlobalFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
         if (isCorrelationIdPresent(requestHeaders)) {
-            logger.debug("java-training-correlation-id found in tracing filter: {}. ",
+            logger.info("java-training-correlation-id found in tracing filter: {}. ",
                     filterUtility.getCorrelationId(requestHeaders));
         } else {
             String correlationID = generateCorrelationId();
             exchange = filterUtility.setCorrelationId(exchange, correlationID);
-            logger.debug("java-training-correlation-id generated in tracing filter: {}.", correlationID);
+            logger.info("java-training-correlation-id generated in tracing filter: {}.", correlationID);
         }
         return chain.filter(exchange);
     }
