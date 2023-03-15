@@ -15,14 +15,15 @@ import java.util.List;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
+    @Value("#{${allowed.domains}}")
+    private List<String> allowedDomains;
 
     @Bean
     public SecurityWebFilterChain sprinSecurityWebFilterChain(ServerHttpSecurity serverHttpSecurity){
         serverHttpSecurity.csrf().disable()
                 .cors().configurationSource(request-> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.addAllowedOriginPattern("http://localhost:4200");
-                    configuration.setAllowCredentials(true);
+                    configuration.setAllowedOrigins(allowedDomains);
                     configuration.setAllowedMethods(Arrays.asList("GET","POST"));
                     configuration.setAllowedHeaders(List.of("*"));
                     return configuration;
